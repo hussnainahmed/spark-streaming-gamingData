@@ -1,0 +1,25 @@
+cat *.data | kafka-console-producer --broker-list cdh-node-1.novalocal:9092,cdh-node-2.novalocal:9092,cdh-node-3.novalocal:9092,cdh-node-4.novalocal:9092,cdh-node-5.novalocal:9092 --topic gamesim4
+
+
+/usr/local/spark/bin/spark-submit --master yarn --deploy-mode client --executor-memory 10g --executor-cores 4 --num-executors 2 --class "APGamingDataStreaming" --files /usr/local/spark/conf/log4j.properties /root/spark-scripts/dexa/APGameDataStreaming/target/scala-2.10/apgamingdatastreaming.jar gamesim2 true 900000 1
+
+
+
+/usr/local/spark/bin/spark-submit --master yarn --deploy-mode client --class "GamingDataStreaming" --executor-memory 10g --executor-cores 4 --num-executors 2 --files /usr/local/spark/conf/log4j.properties /root/spark-scripts/dexa/GameDataStreaming/target/scala-2.10/gamingdatastreaming.jar cdh-node-1.novalocal:9092,cdh-node-2.novalocal:9092,cdh-node-3.novalocal:9092,cdh-node-4.novalocal:9092,cdh-node-5.novalocal:9092 gamesim1 90000
+
+
+/usr/local/spark/bin/spark-submit --master yarn --deploy-mode client --executor-memory 10g --executor-cores 4 --num-executors 4 --files /usr/local/spark/conf/log4j.properties /root/spark-scripts/dexa/GameDataStreaming/target/scala-2.10/gamingdatastreaming.jar cdh-node-1.novalocal:9092,cdh-node-2.novalocal:9092,cdh-node-3.novalocal:9092,cdh-node-4.novalocal:9092,cdh-node-5.novalocal:9092 gamesim1 29000 false
+
+--conf spark.yarn.jar=hdfs://cdh-base.novalocal:8020/user/spark/share/lib/spark-assembly.jar
+
+
+
+########AP yarn-client######
+/usr/local/spark/bin/spark-submit --master yarn --deploy-mode client --executor-memory 10g --executor-cores 4 --num-executors 4 --class "APGamingDataStreaming" --files /usr/local/spark/conf/log4j.properties --conf spark.yarn.jar=hdfs://cdh-base.novalocal:8020/user/spark/share/lib/spark-assembly.jar  /root/spark-scripts/dexa/APGameDataStreaming/target/scala-2.10/apgamingdatastreaming.jar gamesim4 false 152000 1
+
+
+########AP yarn-cluster######
+/usr/local/spark/bin/spark-submit --master yarn-cluster --executor-memory 10g --executor-cores 4 --num-executors 2 --class "APGamingDataStreaming" --files /usr/local/spark/conf/log4j.properties --conf spark.yarn.jar=hdfs://cdh-base.novalocal:8020/user/spark/share/lib/spark-assembly.jar  /root/spark-scripts/dexa/APGameDataStreaming/target/scala-2.10/apgamingdatastreaming.jar gamesim3 true 900000 1
+
+########Direct Kafka yarn-cluster######
+/usr/local/spark/bin/spark-submit --master yarn --deploy-mode client --class "GamingDataStreaming" --executor-memory 10g --executor-cores 4 --num-executors 2 --files /usr/local/spark/conf/log4j.properties --conf spark.yarn.jar=hdfs://cdh-base.novalocal:8020/user/spark/share/lib/spark-assembly.jar  /root/spark-scripts/dexa/GameDataStreaming/target/scala-2.10/gamingdatastreaming.jar cdh-node-1.novalocal:9092,cdh-node-2.novalocal:9092,cdh-node-3.novalocal:9092,cdh-node-4.novalocal:9092,cdh-node-5.novalocal:9093 gamesim3 10000 true
