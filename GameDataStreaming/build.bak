@@ -1,0 +1,27 @@
+lazy val root = (project in file(".")).
+  settings(
+    name := "DeviceDataStreaming",
+    version := "1.0",
+    scalaVersion := "2.10.1"
+)
+
+libraryDependencies ++= Seq(
+  "org.apache.spark" %% "spark-core" % "1.5.1" % "provided",
+  "org.apache.spark" %% "spark-streaming" % "1.5.1" % "provided",
+  "org.apache.spark" %% "spark-sql" % "1.5.1" % "provided",
+  "org.apache.spark" % "spark-hive_2.10" % "1.5.1",
+  "org.apache.spark" %% "spark-mllib" % "1.5.1" % "provided",
+  "org.apache.spark" % "spark-streaming-kafka_2.10" % "1.5.1",
+  "com.datastax.spark" % "spark-cassandra-connector_2.10" % "1.5.0-M2",
+  "org.apache.kafka" % "kafka_2.10" % "0.8.2",
+  "com.datastax.cassandra" % "cassandra-driver-core" % "2.1.8"
+)
+// META-INF discarding
+mergeStrategy in assembly <<= (mergeStrategy in assembly) { (old) =>
+   {
+    case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+    case x => MergeStrategy.first
+   }
+}
+
+assemblyJarName in assembly := "devicedatastreaming.jar"
