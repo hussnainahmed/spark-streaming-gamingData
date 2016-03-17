@@ -23,3 +23,57 @@ cat *.data | kafka-console-producer --broker-list cdh-node-1.novalocal:9092,cdh-
 
 ########Direct Kafka yarn-cluster######
 /usr/local/spark/bin/spark-submit --master yarn --deploy-mode client --class "GamingDataStreaming" --executor-memory 10g --executor-cores 4 --num-executors 2 --files /usr/local/spark/conf/log4j.properties --conf spark.yarn.jar=hdfs://cdh-base.novalocal:8020/user/spark/share/lib/spark-assembly.jar  /root/spark-scripts/dexa/GameDataStreaming/target/scala-2.10/gamingdatastreaming.jar cdh-node-1.novalocal:9092,cdh-node-2.novalocal:9092,cdh-node-3.novalocal:9092,cdh-node-4.novalocal:9092,cdh-node-5.novalocal:9093 gamesim3 10000 true
+
+com.cloudera.cmf.db.type=postgresql
+com.cloudera.cmf.db.host=localhost:7432
+com.cloudera.cmf.db.name=scm
+com.cloudera.cmf.db.user=scm
+com.cloudera.cmf.db.password=h18bHWwtmh
+
+
+h18bHWwtmh
+
+
+select * from HOSTS where ip_address is null or name is null;
+
+
+
+sudo file -s /dev/vdb
+sudo mkfs -t ext4  /dev/vdb
+pvcreate /dev/vdb
+vgextend VolGroup /dev/vdb
+lvextend /dev/mapper/VolGroup-lv_root -L+200G
+fsadm resize /dev/mapper/VolGroup-lv_root
+
+
+sed '4,$d' filename
+
+
+
+nova boot  --image adp-base-centos6.7 --flavor small --hint group=46cca0cc-618f-47b2-a6da-7cf013299d01 --nic net-id=9cde91a9-5531-486f-a250-a47035c0d4c8 --availability-zone nova  adp-base
+nova boot  --image adp-base-centos6.7 --flavor small --hint group=46cca0cc-618f-47b2-a6da-7cf013299d01 --nic net-id=9cde91a9-5531-486f-a250-a47035c0d4c8 --availability-zone nova  adp-node-1
+nova boot  --image adp-base-centos6.7 --flavor small --hint group=46cca0cc-618f-47b2-a6da-7cf013299d01 --nic net-id=9cde91a9-5531-486f-a250-a47035c0d4c8 --availability-zone nova  adp-node-2
+nova boot  --image adp-base-centos6.7 --flavor small --hint group=46cca0cc-618f-47b2-a6da-7cf013299d01 --nic net-id=9cde91a9-5531-486f-a250-a47035c0d4c8 --availability-zone nova  adp-node-3
+nova boot  --image adp-base-centos6.7 --flavor small --hint group=46cca0cc-618f-47b2-a6da-7cf013299d01 --nic net-id=9cde91a9-5531-486f-a250-a47035c0d4c8 --availability-zone nova  adp-node-4
+nova boot  --image adp-base-centos6.7 --flavor small --hint group=46cca0cc-618f-47b2-a6da-7cf013299d01 --nic net-id=9cde91a9-5531-486f-a250-a47035c0d4c8 --availability-zone nova  adp-node-5
+nova boot  --image adp-base-centos6.7 --flavor small --hint group=46cca0cc-618f-47b2-a6da-7cf013299d01 --nic net-id=9cde91a9-5531-486f-a250-a47035c0d4c8 --availability-zone nova  adp-node-6
+nova boot  --image adp-base-centos6.7 --flavor small --hint group=46cca0cc-618f-47b2-a6da-7cf013299d01 --nic net-id=9cde91a9-5531-486f-a250-a47035c0d4c8 --availability-zone nova  adp-node-7
+nova boot  --image adp-base-centos6.7 --flavor small --hint group=46cca0cc-618f-47b2-a6da-7cf013299d01 --nic net-id=9cde91a9-5531-486f-a250-a47035c0d4c8 --availability-zone nova  adp-node-8
+
+
+https://archive.cloudera.com/kafka/parcels/latest/
+
+http://archive-primary.cloudera.com/kafka/parcels/latest/
+
+echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag
+
+
+mvn -Pyarn -Phadoop-2.3 -Dhadoop.version=2.6.0 -Dyarn.version=2.2.0 -DskipTests clean package
+
+
+192.168.50.5,192.168.50.50,192.168.50.51,192.168.52.5,192.168.50.53,192.168.50.54,192.168.50.55,192.168.50.56,192.168.50.57
+
+
+Supervisord	3.0-cm5.6.0	Unavailable	Not applicable
+Java 7	JAVA_HOME=/usr/java/jdk1.7.0_67-cloudera java version "1.7.0_67" Java(TM) SE Runtime Environment (build 1.7.0_67-b01) Java HotSpot(TM) 64-Bit Server VM (build 24.65-b04, mixed mode)	Unavailable	Not applicable
+Cloudera Manager Agent	5.6.0

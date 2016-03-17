@@ -16703,3 +16703,4 @@ Test Mean Squared Error = 42.81482319550602
 2016-03-13T07:51:34.680+0200 I COMMAND  [PeriodicTaskRunner] task: DBConnectionPool-cleaner took: 1054ms
 2016-03-14T09:09:43.380+0200 I COMMAND  [PeriodicTaskRunner] task: DBConnectionPool-cleaner took: 100ms
 2016-03-15T09:20:13.959+0200 I COMMAND  [PeriodicTaskRunner] task: DBConnectionPool-cleaner took: 280ms
+2016-03-16T07:45:12.131+0200 I COMMAND  [PeriodicTaskRunner] task: DBConnectionPool-cleaner took: 1729ms
