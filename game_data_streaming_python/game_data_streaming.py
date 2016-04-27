@@ -105,11 +105,53 @@ if __name__ == "__main__":
     #topic = "energy-stream"
     #topic = "datagen2"
     kvs = KafkaUtils.createStream(ssc, zkQuorum, "gaming-data", {topic:10} )
+    import ast
+
+    def tweet_to_dict(tweet):
+        try:
+            d = ast.literal_eval(tweet)
+
+            if 'text' in d:
+                f.write(data)
+                return True
+        except BaseException as e:
+            print("Error on_data: %s" % str(e))
+        return True
+
+    err_rdd = data.map()
+
+    def tweet_to_dict(tweet):
+        try:
+            d = ast.literal_eval(tweet)
+            if 'text' in d:
+                return d
+            else:
+                return []
+
+        except:
+            return []
+
+
+
+
+
+
+
+
+
+
+
+
+
     #kvs = KafkaUtils.createDirectStream(ssc, [topic], {"metadata.broker.list": brokers})
     #input = ssc.textFileStream("/user/flume/tweet-stream/%s" % tdate)
     #brokers, topic = sys.argv[1:]
     #kvs = KafkaUtils.createDirectStream(ssc, [topic], {"metadata.broker.list": brokers})
     input =  kvs.map(lambda x: x[1])
+
+
+
+
     input.foreachRDD(process)
     ssc.start()
     ssc.awaitTermination()

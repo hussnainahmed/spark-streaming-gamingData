@@ -1,5 +1,8 @@
 cat *.data | kafka-console-producer --broker-list cdh-node-1.novalocal:9092,cdh-node-2.novalocal:9092,cdh-node-3.novalocal:9092,cdh-node-4.novalocal:9092,cdh-node-5.novalocal:9092 --topic gamesim4
 
+cat *.data | kafka-console-producer --broker-list adp-node-1.novalocal:9092,adp-node-2.novalocal:9092,adp-node-3.novalocal:9092,adp-node-4.novalocal:9092,adp-node-5.novalocal:9092 --topic gamesim
+
+
 
 /usr/local/spark/bin/spark-submit --master yarn --deploy-mode client --executor-memory 10g --executor-cores 4 --num-executors 2 --class "APGamingDataStreaming" --files /usr/local/spark/conf/log4j.properties /root/spark-scripts/dexa/APGameDataStreaming/target/scala-2.10/apgamingdatastreaming.jar gamesim2 true 900000 1
 
@@ -15,14 +18,38 @@ cat *.data | kafka-console-producer --broker-list cdh-node-1.novalocal:9092,cdh-
 
 
 ########AP yarn-client######
-/usr/local/spark/bin/spark-submit --master yarn --deploy-mode client --executor-memory 10g --executor-cores 4 --num-executors 4 --class "APGamingDataStreaming" --files /usr/local/spark/conf/log4j.properties --conf spark.yarn.jar=hdfs://cdh-base.novalocal:8020/user/spark/share/lib/spark-assembly.jar  /root/spark-scripts/dexa/APGameDataStreaming/target/scala-2.10/apgamingdatastreaming.jar gamesim4 false 152000 1
+/usr/local/spark/bin/spark-submit --master yarn --deploy-mode client --executor-memory 10g --executor-cores 4 --num-executors 8 --class "APGamingDataStreaming" --files /usr/local/spark/conf/log4j.properties --conf spark.yarn.jar=hdfs://adp-base.novalocal:8020/user/spark/share/lib/spark-assembly.jar  /root/spark-scripts/dexa/code/dexa-lambda-16/APGameDataStreaming/target/scala-2.10/apgamingdatastreaming.jar gamesim2 false 86500 1
+
+########AP yarn-client-spark1.5######
+spark-submit --master yarn --deploy-mode client --executor-memory 10g --executor-cores 4 --num-executors 8 --class "APGamingDataStreaming" --conf spark.yarn.jar=hdfs://adp-base.novalocal:8020/user/spark/share/lib/spark-assembly.jar  /root/spark-scripts/dexa/code/dexa-lambda-16/spark1.5/APGameDataStreaming/target/scala-2.10/apgamingdatastreaming_s15.jar gamesim3 false 86500 1
 
 
 ########AP yarn-cluster######
-/usr/local/spark/bin/spark-submit --master yarn-cluster --executor-memory 10g --executor-cores 4 --num-executors 2 --class "APGamingDataStreaming" --files /usr/local/spark/conf/log4j.properties --conf spark.yarn.jar=hdfs://cdh-base.novalocal:8020/user/spark/share/lib/spark-assembly.jar  /root/spark-scripts/dexa/APGameDataStreaming/target/scala-2.10/apgamingdatastreaming.jar gamesim3 true 900000 1
+/usr/local/spark/bin/spark-submit --master yarn-cluster --executor-memory 10g --executor-cores 4 --num-executors 2 --class "APGamingDataStreaming" --files /usr/local/spark/conf/log4j.properties --conf spark.yarn.jar=hdfs://adp-base.novalocal:8020/user/spark/share/lib/spark-assembly.jar  /root/spark-scripts/dexa/code/dexa-lambda-16/APGameDataStreaming/target/scala-2.10/apgamingdatastreaming.jar gamesim3 true 900000 1
 
 ########Direct Kafka yarn-cluster######
-/usr/local/spark/bin/spark-submit --master yarn --deploy-mode client --class "GamingDataStreaming" --executor-memory 10g --executor-cores 4 --num-executors 2 --files /usr/local/spark/conf/log4j.properties --conf spark.yarn.jar=hdfs://cdh-base.novalocal:8020/user/spark/share/lib/spark-assembly.jar  /root/spark-scripts/dexa/GameDataStreaming/target/scala-2.10/gamingdatastreaming.jar cdh-node-1.novalocal:9092,cdh-node-2.novalocal:9092,cdh-node-3.novalocal:9092,cdh-node-4.novalocal:9092,cdh-node-5.novalocal:9093 gamesim3 10000 true
+/usr/local/spark/bin/spark-submit --master yarn --deploy-mode client --class "GamingDataStreaming" --executor-memory 10g --executor-cores 4 --num-executors 8 --files /usr/local/spark/conf/log4j.properties --conf spark.yarn.jar=hdfs://adp-base.novalocal:8020/user/spark/share/lib/spark-assembly.jar  /root/spark-scripts/dexa/code/dexa-lambda-16/GameDataStreaming/target/scala-2.10/gamingdatastreaming.jar adp-node-1.novalocal:9092,adp-node-2.novalocal:9092,adp-node-3.novalocal:9092,adp-node-4.novalocal:9092,adp-node-5.novalocal:9093 gamesim 40000 false
+
+
+#####Direct Kafka Standalone#####
+/usr/local/spark/bin/spark-submit --master spark://adp-base.novalocal:7077 --class "GamingDataStreaming" --executor-memory 10g --executor-cores 4 --num-executors 8 --files /usr/local/spark/conf/log4j.properties  /root/spark-scripts/dexa/code/dexa-lambda-16/GameDataStreaming/target/scala-2.10/gamingdatastreaming.jar adp-node-1.novalocal:9092,adp-node-2.novalocal:9092,adp-node-3.novalocal:9092,adp-node-4.novalocal:9092,adp-node-5.novalocal:9093 gamesim 40000 false
+
+#####AP Kafka Standalone#####
+/usr/local/spark/bin/spark-submit --master spark://adp-base.novalocal:7077 --class "GamingDataStreaming" --files /usr/local/spark/conf/log4j.properties  /root/spark-scripts/dexa/code/dexa-lambda-16/GameDataStreaming/target/scala-2.10/gamingdatastreaming.jar adp-node-1.novalocal:9092,adp-node-2.novalocal:9092,adp-node-3.novalocal:9092,adp-node-4.novalocal:9092,adp-node-5.novalocal:9093 gamesim4 40000 false
+
+#####AP Kafka Standalone spark 1.5#####
+/usr/local/spark/bin/spark-submit --master spark://adp-base.novalocal:7077 --class "GamingDataStreaming" --executor-memory 10g --executor-cores 4 --num-executors 8 --files /usr/local/spark/conf/log4j.properties  /root/spark-scripts/dexa/code/dexa-lambda-16/GameDataStreaming/target/scala-2.10/gamingdatastreaming.jar adp-node-1.novalocal:9092,adp-node-2.novalocal:9092,adp-node-3.novalocal:9092,adp-node-4.novalocal:9092,adp-node-5.novalocal:9093 gamesim 40000 false
+
+########AP standalone-spark1.5######
+spark-submit--master spark://adp-base.novalocal:7077 --class "APGamingDataStreaming"  /root/spark-scripts/dexa/code/dexa-lambda-16/spark1.5/APGameDataStreaming/target/scala-2.10/apgamingdatastreaming_s15.jar gamesim3 false 86500 1
+
+/usr/local/spark/bin/spark-submit --master spark://adp-base.novalocal:7077 --class "APGamingDataStreaming"  --files /usr/local/spark/conf/log4j.properties  /root/spark-scripts/dexa/code/dexa-lambda-16/APGameDataStreaming/target/scala-2.10/apgamingdatastreaming.jar gamesim3 false 86500 1
+
+
+nohup timeout 60m /usr/local/spark/bin/spark-submit --master spark://adp-base.novalocal:7077 --class "GamingDataStreaming" --files /usr/local/spark/conf/log4j.properties  /root/spark-scripts/dexa/code/dexa-lambda-16/GameDataStreaming/target/scala-2.10/gamingdatastreaming.jar adp-node-1.novalocal:9092,adp-node-2.novalocal:9092,adp-node-3.novalocal:9092,adp-node-4.novalocal:9092,adp-node-5.novalocal:9093 gamesim5 20000 true &
+
+
+nohup timeout 60m cat *.data | kafka-console-producer --broker-list adp-node-1.novalocal:9092,adp-node-2.novalocal:9092,adp-node-3.novalocal:9092,adp-node-4.novalocal:9092,adp-node-5.novalocal:9092 --topic gamedata1 &
 
 com.cloudera.cmf.db.type=postgresql
 com.cloudera.cmf.db.host=localhost:7432
@@ -32,6 +59,15 @@ com.cloudera.cmf.db.password=h18bHWwtmh
 
 
 h18bHWwtmh
+
+adp-base.novalocal
+
+
+<property>
+  <description>The http address of the RM web application.</description>
+  <name>yarn.resourcemanager.webapp.address</name>
+  <value>http://localhost:8088</value>
+</property>
 
 
 select * from HOSTS where ip_address is null or name is null;
@@ -62,6 +98,7 @@ nova boot  --image adp-base-centos6.7 --flavor small --hint group=46cca0cc-618f-
 
 
 https://archive.cloudera.com/kafka/parcels/latest/
+https://archive.cloudera.com/kafka/parcels/latest/
 
 http://archive-primary.cloudera.com/kafka/parcels/latest/
 
@@ -77,3 +114,8 @@ mvn -Pyarn -Phadoop-2.3 -Dhadoop.version=2.6.0 -Dyarn.version=2.2.0 -DskipTests 
 Supervisord	3.0-cm5.6.0	Unavailable	Not applicable
 Java 7	JAVA_HOME=/usr/java/jdk1.7.0_67-cloudera java version "1.7.0_67" Java(TM) SE Runtime Environment (build 1.7.0_67-b01) Java HotSpot(TM) 64-Bit Server VM (build 24.65-b04, mixed mode)	Unavailable	Not applicable
 Cloudera Manager Agent	5.6.0
+
+
+nohup mvn -Pyarn -Phadoop-2.6 -Dhadoop.version=2.6.0-cdh5.6.0 -Phive -Phive-thriftserver -DskipTests clean package &
+
+nohup build/sbt -Pyarn -Phadoop-2.6 -Dhadoop.version=2.6.0-cdh5.6.0 -Phive -Phive-thriftserver assembly &

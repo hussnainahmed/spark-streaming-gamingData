@@ -83,10 +83,12 @@ object GamingDataStreaming{
       val sqlContext = SQLContextSingleton.getInstance(rdd.sparkContext)
       import sqlContext.implicits._
 
-      val game_df =  rdd.map(_.split(",")).map(x => GameData(x(0).toString, x(1).toString, x(2).toString, x(3).toString, x(4).toInt, x(5).toString, x(6).toString, x(7).toString, x(8).toInt, x(9).toInt, x(10).toInt, x(11).toInt, x(12).toInt, x(13).toInt, x(14).toInt, x(15).toString)).toDF()
+      val game_df =  rdd.map(_.split(",")).map(x => GameData(x(0).toString, x(1).toString, x(2).toString, x(3).toString, x(4).toInt, x(5).toString, x(6).toString, x(7).toString, x(8).toInt, x(9).toInt, x(10).toInt, x(11).toInt, x(12).toInt, x(13).toInt, x(14).toInt, x(15).toString)).toDF().cache()
       // Register as table
       game_df.registerTempTable("gaming_stream")
-      val df = sqlContext.sql("select cast(if(gender=='male',1,0) as double) as gender,cast(age as double) as age,country,cast(friend_count as double) as friend_count ,cast(lifetime as double) as lifetime,cast(game1 as double) as game1,cast(game2 as double) as game2,cast(game3 as double) as game3,cast(game4 as double) as game4,cast(if(paid_customer=='yes',1,0) as double) as paid_customer from gaming_stream")
+      val rep_df = sqlContext.sql("select cast(if(gender=='male',1,0) as double) as gender,cast(age as double) as age,country,cast(friend_count as double) as friend_count ,cast(lifetime as double) as lifetime,cast(game1 as double) as game1,cast(game2 as double) as game2,cast(game3 as double) as game3,cast(game4 as double) as game4,cast(if(paid_customer=='yes',1,0) as double) as paid_customer from gaming_stream")
+      rep_df.registerTempTable("gaming_rep")
+      val df = sqlContext.sql("select * from gaming_rep group by gender,age,country,friend_count,lifetime,game1,game2,game3,game4,paid_customer")
       val indexer = new StringIndexer()
         .setInputCol("country")
         .setOutputCol("country_index")
